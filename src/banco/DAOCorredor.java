@@ -192,6 +192,9 @@ public class DAOCorredor {
 
 	public boolean criaBanco() {
 		Connection con = Conexao.getConexaoCriarBanco();
+		if (con==null) {
+			System.out.println("Conexao nula");
+		}
 		Statement st;
 		try {
 			st = con.createStatement();

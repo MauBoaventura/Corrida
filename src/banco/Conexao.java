@@ -1,11 +1,12 @@
 package banco;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
 
 public class Conexao {
 	public Statement st;
@@ -15,7 +16,7 @@ public class Conexao {
 	public static String status = "Não conectou...";
 
 	// Criar conexao
-	public static java.sql.Connection getConexao() {
+	public static Connection getConexao() {
 		Connection connection = null;
 
 		try // A captura de exceções SQLException em Java é obrigatória para
@@ -30,7 +31,7 @@ public class Conexao {
 			String url = "jdbc:mysql://" + serverName + "/" + sid;
 
 			String password = "";
-			connection = DriverManager.getConnection(url, "root", password);
+			connection = (Connection) DriverManager.getConnection(url, "root", password);
 
 			if (connection != null) {
 				status = ("STATUS--->Conectado com sucesso!");
@@ -50,7 +51,7 @@ public class Conexao {
 	}
 
 	//Conexao usadas na hora de criar o Banco de dados caso ele nao exista
-	public static java.sql.Connection getConexaoCriarBanco() {
+	public static Connection getConexaoCriarBanco() {
 		Connection connection = null;
 
 		try // A captura de exceções SQLException em Java é obrigatória para
@@ -64,7 +65,7 @@ public class Conexao {
 			String url = "jdbc:mysql://" + serverName ;
 
 			String password = "";
-			connection = DriverManager.getConnection(url, "root", password);
+			connection = (Connection) DriverManager.getConnection(url, "root", password);
 
 			if (connection != null) {
 				status = ("STATUS--->Conectado com sucesso!");
@@ -99,7 +100,7 @@ public class Conexao {
 	}
 
 	// Reiniciar conexao
-	public static java.sql.Connection ReiniciarConexao() {
+	public static Connection ReiniciarConexao() {
 		FecharConexao();
 		return Conexao.getConexao();
 	}
@@ -107,7 +108,7 @@ public class Conexao {
 	// Excluir tudo
 	public void excluirDadosTabela() {
 		try {
-			Statement stmt = getConexao().createStatement();
+			Statement stmt = (Statement) getConexao().createStatement();
 			String sql = "TRUNCATE my_table";
 			sql = "DELETE FROM my_table";
 			stmt.executeUpdate(sql);
@@ -117,9 +118,9 @@ public class Conexao {
 	}
 
 	public void excluirDadosEspecificos() {
-		d = getConexao();
+		d = (Connection) getConexao();
 		try { // Create a statement
-			Statement stmt = d.createStatement();
+			Statement stmt = (Statement) d.createStatement();
 			// Prepare a statement to insert a record
 			String sql = "DELETE FROM my_table WHERE col_string='a string'";
 			// Execute the delete statement
@@ -145,8 +146,8 @@ public class Conexao {
 			String f = "INSERT INTO `provapoo`.`atendente` (`valorFixoMensal`) VALUES (\'" + valor + "');";
 			System.out.println(f);
 
-			Connection c = getConexao();
-			Statement stmt = c.createStatement();
+			Connection c = (Connection) getConexao();
+			Statement stmt = (Statement) c.createStatement();
 			stmt.executeUpdate(f);
 
 		} catch (SQLException e) {
@@ -162,8 +163,8 @@ public class Conexao {
 					+ "' WHERE `valorFixoMensal`='"+mudarDe+"'";
 			System.out.println(f);
 
-			Connection c = getConexao();
-			Statement stmt = c.createStatement();
+			Connection c = (Connection) getConexao();
+			Statement stmt = (Statement) c.createStatement();
 			stmt.executeUpdate(f);
 
 		} catch (SQLException e) {
@@ -177,8 +178,8 @@ public class Conexao {
 			String f = "DELETE FROM `provapoo`.`atendente` WHERE `valorFixoMensal`='" + valor + "' ";
 			System.out.println(f);
 
-			Connection c = getConexao();
-			Statement stmt = c.createStatement();
+			Connection c = (Connection) getConexao();
+			Statement stmt = (Statement) c.createStatement();
 			stmt.executeUpdate(f);
 
 		} catch (SQLException e) {

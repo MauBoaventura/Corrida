@@ -25,7 +25,7 @@ public class CadastroTela extends JPanel {
 	 * 
 	 * @param mudar
 	 */
-	public CadastroTela(Colocação mudar) {
+	public CadastroTela(final Colocação mudar) {
 		setLayout(null);
 
 		txtNome = new JTextField();
@@ -42,11 +42,11 @@ public class CadastroTela extends JPanel {
 		lblCategoria.setBounds(40, 67, 76, 14);
 		add(lblCategoria);
 
-		JRadioButton rdbtnKm = new JRadioButton("6 KM");
+		final JRadioButton rdbtnKm = new JRadioButton("6 KM");
 		rdbtnKm.setBounds(138, 67, 109, 14);
 		add(rdbtnKm);
 
-		JRadioButton rdbtnKm_1 = new JRadioButton("12 KM");
+		final JRadioButton rdbtnKm_1 = new JRadioButton("12 KM");
 		rdbtnKm_1.setBounds(249, 65, 109, 18);
 		add(rdbtnKm_1);
 
@@ -54,11 +54,11 @@ public class CadastroTela extends JPanel {
 		lblSexo.setBounds(40, 92, 46, 14);
 		add(lblSexo);
 
-		JRadioButton rdbtnMasculino = new JRadioButton("Masculino");
+		final JRadioButton rdbtnMasculino = new JRadioButton("Masculino");
 		rdbtnMasculino.setBounds(138, 88, 109, 23);
 		add(rdbtnMasculino);
 
-		JRadioButton rdbtnFemenino = new JRadioButton("Femenino");
+		final JRadioButton rdbtnFemenino = new JRadioButton("Femenino");
 		rdbtnFemenino.setBounds(249, 88, 109, 23);
 		add(rdbtnFemenino);
 
@@ -118,7 +118,7 @@ public class CadastroTela extends JPanel {
 
 	}
 
-	public static void main(String[] args, Colocação mudar) {
+	public static void main(String[] args, final Colocação mudar) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
