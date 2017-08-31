@@ -193,7 +193,7 @@ public class ExecutaCorrida extends JFrame {
 					eu.salva();
 					i++;
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Errosalvar tempo", "Relatorios",
+					JOptionPane.showMessageDialog(null, "Erro salvar tempo", "Relatorios",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (i == 4) {
@@ -276,5 +276,14 @@ public class ExecutaCorrida extends JFrame {
 		});
 		btnSalvar.setBounds(10, 286, 89, 23);
 		contentPane.add(btnSalvar);
+		
+		JButton btnAjustes = new JButton("Ajustes");
+		btnAjustes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Configuracoes.main(null,eu);
+			}
+		});
+		btnAjustes.setBounds(385, 286, 89, 23);
+		contentPane.add(btnAjustes);
 	}
 }

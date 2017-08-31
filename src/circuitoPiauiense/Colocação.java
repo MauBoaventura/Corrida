@@ -26,15 +26,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import banco.DAOCorredor;
 
-//import java.io.ObjectInputStream.GetField;  
-//import java.util.Comparator;  
-
-//import java.io.ObjectInputStream.GetField;  
-//import java.util.Comparator;  
-
 public class Colocação {
 	private static final DateFormat FORMATO = new SimpleDateFormat("MM/yyyy");
 	private long inicio;
+	private static String kmMenor;
+	private static String kmMaior;
 	FileSystemView dir = FileSystemView.getFileSystemView();
 	String desktop = dir.getHomeDirectory().getPath();
 	List<Corredor> atletas = new ArrayList<Corredor>();
@@ -43,8 +39,8 @@ public class Colocação {
 	public Colocação() {
 		super();
 		if (criaBanco()) {
-			System.out.println("Banco funcinando!");
-		}else{
+			System.out.println("Banco funcionando!");
+		} else {
 			System.out.println("Erro no Banco");
 		}
 		try {
@@ -82,7 +78,7 @@ public class Colocação {
 		case "2":
 			String nome;
 			String numero;
-			String km6;
+			String km;
 			String idade;
 			String sexo;
 
@@ -115,11 +111,11 @@ public class Colocação {
 			do {
 				flag = 0;
 				System.out.println("Quilometragem do atleta:");
-				km6 = ler.next();
+				km = ler.next();
 
 				try {
 
-					quilometro = Integer.parseInt(km6);
+					quilometro = Integer.parseInt(km);
 
 				} catch (NumberFormatException e) {
 					flag = 1;
@@ -159,13 +155,13 @@ public class Colocação {
 
 			System.out.printf("Nome: %s\nNumero: %d\nKm: %d\nIdade: %d\nSexo: %s\n", nome, num, quilometro, id, sexo);
 
-			adiciona(nome, numero, km6, idade, sexo);
+			adiciona(nome, numero, km, idade, sexo);
 			break;
 		case "3":
 			System.out.println("\t\t\tLISTA DE COMPETIDORES\n\n");
 			for (int i = 0; i < atletas.size(); i++) {
 				System.out.println("Nome: " + atletas.get(i).getNome() + "\nNumero: " + atletas.get(i).getNumero()
-						+ "\nCategoria: " + atletas.get(i).getKm6() + "km" + "\nSexo: " + atletas.get(i).getSexo()
+						+ "\nCategoria: " + atletas.get(i).getKm() + "km" + "\nSexo: " + atletas.get(i).getSexo()
 						+ "\n");
 			}
 			break;
@@ -190,7 +186,7 @@ public class Colocação {
 			System.out.println("\t\t\tGeral 12 KM\n");
 
 			for (int i = 0, cont = 1; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 12 && (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
+				if (atletas.get(i).getKm() == 12 && (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 						&& atletas.get(i).getTempoS() == 0)) {
 					System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
 							atletas.get(i).getNome(), atletas.get(i).getTempoH(), atletas.get(i).getTempoM(),
@@ -199,10 +195,10 @@ public class Colocação {
 				}
 			}
 
-			System.out.println("\t\t\tGeral 6 KM\n");
+			System.out.println("\t\t\tGeral "+getKmMenor()+" KM\n");
 
 			for (int i = 0, cont = 1; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 6 && (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
+				if (atletas.get(i).getKm() == 6 && (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 						&& atletas.get(i).getTempoS() == 0)) {
 					System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
 							atletas.get(i).getNome(), atletas.get(i).getTempoH(), atletas.get(i).getTempoM(),
@@ -213,7 +209,7 @@ public class Colocação {
 			System.out.println("\t\t\tGeral Feminina 12 KM\n");
 
 			for (int i = 0, cont = 1; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("F")
+				if (atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("F")
 						&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 								&& atletas.get(i).getTempoS() == 0)) {
 					System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -222,10 +218,10 @@ public class Colocação {
 					cont++;
 				}
 			}
-			System.out.println("\t\t\tGeral Femininia 6 KM\n");
+			System.out.println("\t\t\tGeral Femininia "+getKmMenor()+" KM\n");
 
 			for (int i = 0, cont = 1; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("F")
+				if (atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("F")
 						&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 								&& atletas.get(i).getTempoS() == 0)) {
 					System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -237,7 +233,7 @@ public class Colocação {
 			System.out.println("\t\t\tGeral Masculina 12 KM\n");
 
 			for (int i = 0, cont = 1; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("M")
+				if (atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("M")
 						&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 								&& atletas.get(i).getTempoS() == 0)) {
 					System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -246,10 +242,10 @@ public class Colocação {
 					cont++;
 				}
 			}
-			System.out.println("\t\t\tGeral Masculina 6 KM\n");
+			System.out.println("\t\t\tGeral Masculina "+getKmMenor()+" KM\n");
 
 			for (int i = 0, cont = 1; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("M")
+				if (atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("M")
 						&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 								&& atletas.get(i).getTempoS() == 0)) {
 					System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -422,19 +418,19 @@ public class Colocação {
 			System.err.println(de.getMessage());
 		}
 
-		System.out.println("\t\t\tAdrenalina 18-28 M 12\n");
+		System.out.println("\t\t\tAdrenalina 18-28 M "+getKmMaior()+"\n");
 		document.newPage();
 
 		Corredor corredor = new Corredor();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 M 12 - "
+					"                                                      	        Adrenalina 18-28 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -449,19 +445,19 @@ public class Colocação {
 
 		// Adrenalina 18-28 M 6
 
-		System.out.println("\t\t\tAdrenalina 18-28 M 6\n");
+		System.out.println("\t\t\tAdrenalina 18-28 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 M 6 - "
+					"                                                      	        Adrenalina 18-28 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -476,19 +472,19 @@ public class Colocação {
 
 		// Adrenalina 18-28 F 12
 
-		System.out.println("\t\t\tAdrenalina 18-28 F 12\n");
+		System.out.println("\t\t\tAdrenalina 18-28 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 F 12 - "
+					"                                                      	        Adrenalina 18-28 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -506,14 +502,14 @@ public class Colocação {
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 F 6 - "
+					"                                                      	        Adrenalina 18-28 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -530,7 +526,7 @@ public class Colocação {
 
 		// Race 29-39 M 12
 
-		System.out.println("\t\t\tRace 29-39 M 12\n");
+		System.out.println("\t\t\tRace 29-39 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
@@ -543,7 +539,7 @@ public class Colocação {
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -558,19 +554,19 @@ public class Colocação {
 
 		// Race 29-39 M 6
 
-		System.out.println("\t\t\tRace 29-39 M 6\n");
+		System.out.println("\t\t\tRace 29-39 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Race 29-39 M 6 - "
+					new Paragraph("                                                      	        Race 29-39 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -585,19 +581,19 @@ public class Colocação {
 
 		// Race 29-39 F 12
 
-		System.out.println("\t\t\tRace 29-39 F 12\n");
+		System.out.println("\t\t\tRace 29-39 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Race 29-39 F 12 - "
+					new Paragraph("                                                      	        Race 29-39 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -612,19 +608,19 @@ public class Colocação {
 
 		// Race 29-39 F 6
 
-		System.out.println("\t\t\tRace 29-39 F 6\n");
+		System.out.println("\t\t\tRace 29-39 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Race 29-39 F 6 - "
+					new Paragraph("                                                      	        Race 29-39 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -641,20 +637,20 @@ public class Colocação {
 
 		// Extreme 40-49 M 12
 
-		System.out.println("\t\t\tExtreme 40-49 M 12\n");
+		System.out.println("\t\t\tExtreme 40-49 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 M 12 - "
+					"                                                      	        Extreme 40-49 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -669,19 +665,19 @@ public class Colocação {
 
 		// Extreme 40-49 M 6
 
-		System.out.println("\t\t\tExtreme 40-49 M 6\n");
+		System.out.println("\t\t\tExtreme 40-49 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 M 6 - "
+					"                                                      	        Extreme 40-49 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -696,19 +692,19 @@ public class Colocação {
 
 		// Extreme 40-49 F 12
 
-		System.out.println("\t\t\tExtreme 40-49 F 12\n");
+		System.out.println("\t\t\tExtreme 40-49 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 F 12 - "
+					"                                                      	        Extreme 40-49 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -723,19 +719,19 @@ public class Colocação {
 
 		// Extreme 40-49 F 6
 
-		System.out.println("\t\t\tExtreme 40-49 F 6\n");
+		System.out.println("\t\t\tExtreme 40-49 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 F 6 - "
+					"                                                      	        Extreme 40-49 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -752,20 +748,20 @@ public class Colocação {
 
 		// Force 50-59 M 12
 
-		System.out.println("\t\t\tForce 50-59 M 12\n");
+		System.out.println("\t\t\tForce 50-59 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 M 12 - "
+					new Paragraph("                                                      	        Force 50-59 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -780,19 +776,19 @@ public class Colocação {
 
 		// Force 50-59 M 6
 
-		System.out.println("\t\t\tForce 50-59 M 6\n");
+		System.out.println("\t\t\tForce 50-59 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 M 6 - "
+					new Paragraph("                                                      	        Force 50-59 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -807,19 +803,19 @@ public class Colocação {
 
 		// Force 50-59 F 12
 
-		System.out.println("\t\t\tForce 50-59 F 12\n");
+		System.out.println("\t\t\tForce 50-59 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 F 12 - "
+					new Paragraph("                                                      	        Force 50-59 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -834,19 +830,19 @@ public class Colocação {
 
 		// Force 50-59 F 6
 
-		System.out.println("\t\t\tForce 50-59 F 6\n");
+		System.out.println("\t\t\tForce 50-59 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 F 6 - "
+					new Paragraph("                                                      	        Force 50-59 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && !(atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -863,20 +859,20 @@ public class Colocação {
 
 		// Iron +60 M 12
 
-		System.out.println("\t\t\tIron +60 M 12\n");
+		System.out.println("\t\t\tIron +60 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Iron +60 M 12 - "
+					new Paragraph("                                                      	        Iron +60 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("M")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("M")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -891,18 +887,18 @@ public class Colocação {
 
 		// Iron +60 M 6
 
-		System.out.println("\t\t\tIron +60 M 6\n");
+		System.out.println("\t\t\tIron +60 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
-			document.add(new Paragraph("                                                      	        Iron +60 M 6 - "
+			document.add(new Paragraph("                                                      	        Iron +60 M "+getKmMenor()+" - "
 					+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("M")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("M")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -917,19 +913,19 @@ public class Colocação {
 
 		// Iron +60 F 12
 
-		System.out.println("\t\t\tIron +60 F 12\n");
+		System.out.println("\t\t\tIron +60 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Iron +60 F 12 - "
+					new Paragraph("                                                      	        Iron +60 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("F")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("F")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -944,18 +940,18 @@ public class Colocação {
 
 		// Iron +60 F 6
 
-		System.out.println("\t\t\tIron +60 F 6\n");
+		System.out.println("\t\t\tIron +60 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
-			document.add(new Paragraph("                                                      	        Iron +60 F 6 - "
+			document.add(new Paragraph("                                                      	        Iron +60 F "+getKmMenor()+" - "
 					+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("F")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("F")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1002,18 +998,18 @@ public class Colocação {
 
 		document.open();
 
-		System.out.println("\t\t\tAdrenalina 18-28 M 12\n");
+		System.out.println("\t\t\tAdrenalina 18-28 M "+getKmMaior()+"\n");
 
 		Corredor corredor = new Corredor();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 M 12 - "
+					"                                                      	        Adrenalina 18-28 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1028,19 +1024,19 @@ public class Colocação {
 
 		// Adrenalina 18-28 M 6
 
-		System.out.println("\t\t\tAdrenalina 18-28 M 6\n");
+		System.out.println("\t\t\tAdrenalina 18-28 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 M 6 - "
+					"                                                      	        Adrenalina 18-28 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1055,19 +1051,19 @@ public class Colocação {
 
 		// Adrenalina 18-28 F 12
 
-		System.out.println("\t\t\tAdrenalina 18-28 F 12\n");
+		System.out.println("\t\t\tAdrenalina 18-28 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 F 12 - "
+					"                                                      	        Adrenalina 18-28 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1085,14 +1081,14 @@ public class Colocação {
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Adrenalina 18-28 F 6 - "
+					"                                                      	        Adrenalina 18-28 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 18 && atletas.get(i).getIdade() <= 28 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1109,20 +1105,20 @@ public class Colocação {
 
 		// Race 29-39 M 12
 
-		System.out.println("\t\t\tRace 29-39 M 12\n");
+		System.out.println("\t\t\tRace 29-39 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Race 29-39 M 12 - "
+					new Paragraph("                                                      	        Race 29-39 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1137,19 +1133,19 @@ public class Colocação {
 
 		// Race 29-39 M 6
 
-		System.out.println("\t\t\tRace 29-39 M 6\n");
+		System.out.println("\t\t\tRace 29-39 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Race 29-39 M 6 - "
+					new Paragraph("                                                      	        Race 29-39 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1164,19 +1160,19 @@ public class Colocação {
 
 		// Race 29-39 F 12
 
-		System.out.println("\t\t\tRace 29-39 F 12\n");
+		System.out.println("\t\t\tRace 29-39 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Race 29-39 F 12 - "
+					new Paragraph("                                                      	        Race 29-39 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1191,19 +1187,19 @@ public class Colocação {
 
 		// Race 29-39 F 6
 
-		System.out.println("\t\t\tRace 29-39 F 6\n");
+		System.out.println("\t\t\tRace 29-39 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Race 29-39 F 6 - "
+					new Paragraph("                                                      	        Race 29-39 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 29 && atletas.get(i).getIdade() <= 39 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1220,20 +1216,20 @@ public class Colocação {
 
 		// Extreme 40-49 M 12
 
-		System.out.println("\t\t\tExtreme 40-49 M 12\n");
+		System.out.println("\t\t\tExtreme 40-49 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 M 12 - "
+					"                                                      	        Extreme 40-49 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1248,19 +1244,19 @@ public class Colocação {
 
 		// Extreme 40-49 M 6
 
-		System.out.println("\t\t\tExtreme 40-49 M 6\n");
+		System.out.println("\t\t\tExtreme 40-49 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 M 6 - "
+					"                                                      	        Extreme 40-49 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1275,19 +1271,19 @@ public class Colocação {
 
 		// Extreme 40-49 F 12
 
-		System.out.println("\t\t\tExtreme 40-49 F 12\n");
+		System.out.println("\t\t\tExtreme 40-49 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 F 12 - "
+					"                                                      	        Extreme 40-49 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1302,19 +1298,19 @@ public class Colocação {
 
 		// Extreme 40-49 F 6
 
-		System.out.println("\t\t\tExtreme 40-49 F 6\n");
+		System.out.println("\t\t\tExtreme 40-49 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(new Paragraph(
-					"                                                      	        Extreme 40-49 F 6 - "
+					"                                                      	        Extreme 40-49 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 40 && atletas.get(i).getIdade() <= 49 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1331,20 +1327,20 @@ public class Colocação {
 
 		// Force 50-59 M 12
 
-		System.out.println("\t\t\tForce 50-59 M 12\n");
+		System.out.println("\t\t\tForce 50-59 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 M 12 - "
+					new Paragraph("                                                      	        Force 50-59 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1359,19 +1355,19 @@ public class Colocação {
 
 		// Force 50-59 M 6
 
-		System.out.println("\t\t\tForce 50-59 M 6\n");
+		System.out.println("\t\t\tForce 50-59 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 M 6 - "
+					new Paragraph("                                                      	        Force 50-59 M "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("M") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1386,19 +1382,19 @@ public class Colocação {
 
 		// Force 50-59 F 12
 
-		System.out.println("\t\t\tForce 50-59 F 12\n");
+		System.out.println("\t\t\tForce 50-59 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 F 12 - "
+					new Paragraph("                                                      	        Force 50-59 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 12
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 12
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1413,19 +1409,19 @@ public class Colocação {
 
 		// Force 50-59 F 6
 
-		System.out.println("\t\t\tForce 50-59 F 6\n");
+		System.out.println("\t\t\tForce 50-59 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Force 50-59 F 6 - "
+					new Paragraph("                                                      	        Force 50-59 F "+getKmMenor()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm6() == 6
+			if (atletas.get(i).getIdade() >= 50 && atletas.get(i).getIdade() <= 59 && atletas.get(i).getKm() == 6
 					&& atletas.get(i).getSexo().equals("F") && (atletas.get(i).getTempoH() == 0
 							&& atletas.get(i).getTempoM() == 0 && atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1442,20 +1438,20 @@ public class Colocação {
 
 		// Iron +60 M 12
 
-		System.out.println("\t\t\tIron +60 M 12\n");
+		System.out.println("\t\t\tIron +60 M "+getKmMaior()+"\n");
 
 		document.newPage();
 		corredor = new Corredor();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Iron +60 M 12 - "
+					new Paragraph("                                                      	        Iron +60 M "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("M")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("M")
 					&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1470,18 +1466,18 @@ public class Colocação {
 
 		// Iron +60 M 6
 
-		System.out.println("\t\t\tIron +60 M 6\n");
+		System.out.println("\t\t\tIron +60 M "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
-			document.add(new Paragraph("                                                      	        Iron +60 M 6 - "
+			document.add(new Paragraph("                                                      	        Iron +60 M "+getKmMenor()+" - "
 					+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("M")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("M")
 					&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1496,19 +1492,19 @@ public class Colocação {
 
 		// Iron +60 F 12
 
-		System.out.println("\t\t\tIron +60 F 12\n");
+		System.out.println("\t\t\tIron +60 F "+getKmMaior()+"\n");
 
 		document.newPage();
 		try {
 			document.add(
-					new Paragraph("                                                      	        Iron +60 F 12 - "
+					new Paragraph("                                                      	        Iron +60 F "+getKmMaior()+" - "
 							+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("F")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("F")
 					&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1523,18 +1519,18 @@ public class Colocação {
 
 		// Iron +60 F 6
 
-		System.out.println("\t\t\tIron +60 F 6\n");
+		System.out.println("\t\t\tIron +60 F "+getKmMenor()+"\n");
 
 		document.newPage();
 		try {
-			document.add(new Paragraph("                                                      	        Iron +60 F 6 - "
+			document.add(new Paragraph("                                                      	        Iron +60 F "+getKmMenor()+" - "
 					+ FORMATO.format(new Date())));
 		} catch (DocumentException e) {
 
 			e.printStackTrace();
 		}
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("F")
+			if (atletas.get(i).getIdade() >= 60 && atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("F")
 					&& (atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				try {
@@ -1557,7 +1553,7 @@ public class Colocação {
 
 		try {
 			PdfWriter.getInstance(document,
-					new FileOutputStream(desktop + File.separator + pasta + File.separator + "6KM e 12KM.pdf"));
+					new FileOutputStream(desktop + File.separator + pasta + File.separator + ""+getKmMenor()+"KM e "+getKmMaior()+"KM.pdf"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
@@ -1568,11 +1564,11 @@ public class Colocação {
 		try {
 			int cont = 0;
 			document.add(
-					new Paragraph("                                                      	        Corredores 6KM - "
+					new Paragraph("                                                      	        Corredores "+getKmMenor()+"KM - "
 							+ FORMATO.format(new Date())));
 			Corredor corredor = new Corredor();
 			for (int i = 0; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 6) {
+				if (atletas.get(i).getKm() == 6) {
 					try {
 						document.add(new Paragraph(corredor.montada(cont, atletas, i)));
 						cont++;
@@ -1591,11 +1587,11 @@ public class Colocação {
 		try {
 			int cont = 0;
 			document.add(
-					new Paragraph("                                                      	        Corredores 12KM - "
+					new Paragraph("                                                      	        Corredores "+getKmMaior()+"KM - "
 							+ FORMATO.format(new Date())));
 			Corredor corredor = new Corredor();
 			for (int i = 0; i < atletas.size(); i++) {
-				if (atletas.get(i).getKm6() == 12) {
+				if (atletas.get(i).getKm() == 12) {
 					try {
 						document.add(new Paragraph(corredor.montada(cont, atletas, i)));
 						cont++;
@@ -1620,17 +1616,17 @@ public class Colocação {
 		System.out.println("\t\t\tGeral 12 KM\n");
 
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getKm6() == 12 && !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
+			if (atletas.get(i).getKm() == 12 && !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 					&& atletas.get(i).getTempoS() == 0)) {
 				System.out.printf(atletas.get(i).montada(cont, atletas, i) + "\n");
 				cont++;
 			}
 		}
 
-		System.out.println("\t\t\tGeral 6 KM\n");
+		System.out.println("\t\t\tGeral "+getKmMenor()+" KM\n");
 
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getKm6() == 6 && !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
+			if (atletas.get(i).getKm() == 6 && !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 					&& atletas.get(i).getTempoS() == 0)) {
 				System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
 						atletas.get(i).getNome(), atletas.get(i).getTempoH(), atletas.get(i).getTempoM(),
@@ -1641,7 +1637,7 @@ public class Colocação {
 		System.out.println("\t\t\tGeral Feminina 12 KM\n");
 
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("F")
+			if (atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("F")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -1650,10 +1646,10 @@ public class Colocação {
 				cont++;
 			}
 		}
-		System.out.println("\t\t\tGeral Femininia 6 KM\n");
+		System.out.println("\t\t\tGeral Femininia "+getKmMenor()+" KM\n");
 
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("F")
+			if (atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("F")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -1665,7 +1661,7 @@ public class Colocação {
 		System.out.println("\t\t\tGeral Masculina 12 KM\n");
 
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getKm6() == 12 && atletas.get(i).getSexo().equals("M")
+			if (atletas.get(i).getKm() == 12 && atletas.get(i).getSexo().equals("M")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -1674,10 +1670,10 @@ public class Colocação {
 				cont++;
 			}
 		}
-		System.out.println("\t\t\tGeral Masculina 6 KM\n");
+		System.out.println("\t\t\tGeral Masculina "+getKmMenor()+" KM\n");
 
 		for (int i = 0, cont = 1; i < atletas.size(); i++) {
-			if (atletas.get(i).getKm6() == 6 && atletas.get(i).getSexo().equals("M")
+			if (atletas.get(i).getKm() == 6 && atletas.get(i).getSexo().equals("M")
 					&& !(atletas.get(i).getTempoH() == 0 && atletas.get(i).getTempoM() == 0
 							&& atletas.get(i).getTempoS() == 0)) {
 				System.out.printf("%d- Nº:%02d   NOME:%s\t%02d:%02d:%02d\n", cont, atletas.get(i).getNumero(),
@@ -1700,7 +1696,7 @@ public class Colocação {
 
 	}
 
-	public int adiciona(String nome, String numero, String quilo, String identi, String sexo) {
+	public int adiciona(String nome, String numero, String quilometragem, String identi, String sexo) {
 
 		if (procuraNumero(Integer.parseInt(numero)) != null) {
 			return 1;
@@ -1708,14 +1704,14 @@ public class Colocação {
 
 		DAOCorredor daoC = new DAOCorredor();
 
-		Corredor c = new Corredor(nome, Integer.parseInt(numero), Integer.parseInt(quilo), Integer.parseInt(identi),
-				sexo);
-
-		atletas.add(c);
+		Corredor c = new Corredor(nome, Integer.parseInt(numero), Integer.parseInt(quilometragem),
+				Integer.parseInt(identi), sexo);
 
 		if (daoC.pesquisar(c.getNumero()) == null) {
 			daoC.salvar(c);
 		}
+		atletas.add(c);
+
 		return 0;
 	}
 
@@ -1751,6 +1747,9 @@ public class Colocação {
 				inicio = Long.parseLong(linha);
 			}
 			arq.close();
+			setKmMaior("12");
+			setKmMenor("6");
+			
 		} catch (IOException e) {
 			// System.out.printf("Erro na abertura do arquivo: %s.\n",
 			// e.getMessage());
@@ -1782,6 +1781,22 @@ public class Colocação {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static String getKmMenor() {
+		return kmMenor;
+	}
+
+	public static void setKmMenor(String kmMenor) {
+		Colocação.kmMenor = kmMenor;
+	}
+
+	public static String getKmMaior() {
+		return kmMaior;
+	}
+
+	public static void setKmMaior(String kmMaior) {
+		Colocação.kmMaior = kmMaior;
 	}
 
 }

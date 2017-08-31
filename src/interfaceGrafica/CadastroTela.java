@@ -20,11 +20,19 @@ public class CadastroTela extends JPanel {
 	private JTextField textIdade;
 	private JTextField textNumero;
 
-	/**
-	 * Create the panel.
-	 * 
-	 * @param mudar
-	 */
+	public static void main(String[] args, final Colocação mudar) {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				JFrame frame = new JFrame();
+				frame.setContentPane(new CadastroTela(mudar));
+				frame.pack();
+				frame.setVisible(true);
+				frame.setBounds(100, 100, 432, 255);
+			}
+		});
+	}
+
 	public CadastroTela(final Colocação mudar) {
 		setLayout(null);
 
@@ -32,7 +40,6 @@ public class CadastroTela extends JPanel {
 		txtNome.setBounds(138, 36, 230, 20);
 		add(txtNome);
 		txtNome.setColumns(10);
-
 
 		JLabel lblNomeDoCorredor = new JLabel("Nome");
 		lblNomeDoCorredor.setBounds(40, 39, 88, 14);
@@ -103,9 +110,10 @@ public class CadastroTela extends JPanel {
 					JOptionPane.showMessageDialog(null, "Cadastro bem sucessido", "Sucesso",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
-				
+
 				txtNome.setText("");
-				textIdade.setText("");;
+				textIdade.setText("");
+				;
 				textNumero.setText("");
 				rdbtnFemenino.setSelected(false);
 				rdbtnMasculino.setSelected(false);
@@ -118,17 +126,4 @@ public class CadastroTela extends JPanel {
 
 	}
 
-	public static void main(String[] args, final Colocação mudar) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				JFrame frame = new JFrame();
-				frame.setContentPane(new CadastroTela(mudar));
-				frame.pack();
-				frame.setVisible(true);
-				frame.setBounds(100, 100, 432, 255);
-
-			}
-		});
-	}
 }

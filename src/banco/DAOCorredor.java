@@ -16,7 +16,7 @@ public class DAOCorredor {
 		try {
 			st = con.createStatement();
 			String sql = "INSERT INTO corredores (nome, km, numero, idade, sexo) VALUES (\'" + c.getNome() + "\',"
-					+ c.getKm6() + "," + c.getNumero() + "," + c.getIdade() + ",\'" + c.getSexo() + "\'";
+					+ c.getKm() + "," + c.getNumero() + "," + c.getIdade() + ",\'" + c.getSexo() + "\'";
 			sql += ")";
 			System.out.println(sql);
 			st.executeUpdate(sql);

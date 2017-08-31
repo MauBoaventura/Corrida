@@ -5,7 +5,7 @@ import java.util.List;
 public class Corredor {
 	private String nome;
 	private int numero;
-	private int km6;
+	private int km;
 	private int idade;
 	private String sexo;
 	
@@ -19,7 +19,7 @@ public class Corredor {
 			double totalDeMilis) {
 		setNome(nomeA);
 		numero = n;
-		km6 = km;
+		this.km = km;
 		idade = idad;
 		sexo = sexoM;
 		tempoH = tempoHora;
@@ -31,7 +31,7 @@ public class Corredor {
 	public Corredor(String nomeA, int n, int km, int idad, String sexoM) {
 		setNome(nomeA);
 		numero = n;
-		km6 = km;
+		this.km = km;
 		idade = idad;
 		sexo = sexoM;
 	}
@@ -78,12 +78,12 @@ public class Corredor {
 		this.numero = numero;
 	}
 
-	public int getKm6() {
-		return km6;
+	public int getKm() {
+		return km;
 	}
 
 	public void setKm6(int km6) {
-		this.km6 = km6;
+		this.km = km6;
 	}
 
 	public int getIdade() {
